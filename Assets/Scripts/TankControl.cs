@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class TankControl : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _projejctile;
+	[SerializeField] private Rigidbody _projejctile;
 	[SerializeField] private float _projectileForce;
-    [SerializeField] private float _speed;
+	[SerializeField] private float _speed;
 
 	private Rigidbody _playerRb;
 	private bool _isOnGround;
-	private float _zBoundary = 18;
+	private float _zBoundary = 15;
 
-    void Start()
-    {
-        _playerRb = GetComponent<Rigidbody>();    
-    }
+	void Start()
+	{
+		_playerRb = GetComponent<Rigidbody>();
+	}
 
 	void Update()
 	{
