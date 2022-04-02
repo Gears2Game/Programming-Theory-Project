@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
 	private Rigidbody _rigidBody;
 
-	void Start()
+	private void Start()
 	{
 		_rigidBody = GetComponent<Rigidbody>();
 	}
@@ -16,11 +14,38 @@ public class Vehicle : MonoBehaviour
 		_rigidBody.AddForce(Vector3.forward * -(speed + Random.Range(1f,10f)), ForceMode.Force);
 	}
 
-	private void OnCollisionEnter(Collision collision)
+	public virtual void Avoid(float steerAmount)
 	{
-		if (collision.gameObject.CompareTag("Obstacle"))
+		_rigidBody.AddForce(Vector3.right * steerAmount, ForceMode.Impulse);
+	}
+
+	//private void OnCollisionEnter(Collision collision)
+	//{
+	//	if (collision.gameObject.CompareTag("Obstacle"))
+	//	{
+	//		Destroy(gameObject);
+	//	}
+
+	//	if (collision.gameObject.CompareTag("Player"))
+	//	{
+	//		Destroy(gameObject);
+	//		GamePointHandler.Instance.GamePoint -= 1;
+	//		print(GamePointHandler.Instance.GamePoint);
+	//	}
+	//}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag("Obstacle"))
 		{
 			Destroy(gameObject);
+		}
+
+		if (other.gameObject.CompareTag("Player"))
+		{
+			Destroy(gameObject);
+			GamePointHandler.Instance.GamePoint -= 1;
+			print(GamePointHandler.Instance.GamePoint);
 		}
 	}
 }
