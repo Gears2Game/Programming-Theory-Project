@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// INHERITANCE
 public class Van : Vehicle
 {
 	[SerializeField] private float _speed;

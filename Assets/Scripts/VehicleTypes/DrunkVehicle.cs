@@ -1,5 +1,5 @@
 using UnityEngine;
-
+// INHERITANCE
 public class DrunkVehicle : Vehicle
 {
 	private float _swervingTime;
@@ -10,23 +10,12 @@ public class DrunkVehicle : Vehicle
 
 	private void OnEnable()
 	{
+		// ABSTRACTION
 		RandomizeBehaviour();
 		RandomizeSpeedAmount();
 	}
 
-	// randomize behavior of each drunk vehicle
-	private void RandomizeBehaviour()
-	{
-		_randomDirection = Random.Range(0f, 2f);
-		_steerAmount = Random.Range(20f, 40f);
-		_swervingTime = Random.Range(1f, 2f);
-	}
-
-	private void RandomizeSpeedAmount()
-	{
-		_speed = Random.Range(55f, 70f);
-	}
-
+	
 	private void Update()
 	{
 		MoveForward(_speed);
@@ -50,9 +39,22 @@ public class DrunkVehicle : Vehicle
 		}
 	}
 
-	// override steeramount with a randomized value
+	// POLYMORPHISM
 	public override void Avoid(float steerAmount)
 	{
-		base.Avoid(steerAmount);
+		base.Avoid(steerAmount); // override steeramount with a randomized value
 	}
+
+	private void RandomizeBehaviour()
+	{
+		_randomDirection = Random.Range(0f, 2f);
+		_steerAmount = Random.Range(20f, 40f);
+		_swervingTime = Random.Range(1f, 2f);
+	}
+
+	private void RandomizeSpeedAmount()
+	{
+		_speed = Random.Range(55f, 70f);
+	}
+
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// INHERITANCE
 public class Bus : Vehicle
 {
 	private float _speed;

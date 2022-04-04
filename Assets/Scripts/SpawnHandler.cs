@@ -17,6 +17,7 @@ public class SpawnHandler : MonoBehaviour
 
 	void Start()
 	{
+		// ABSTRACTION
 		InvokeRepeating("SpawnPowerUp", _spawnDelay, _spawnIntervalPowerUp);
 		InvokeRepeating("SpawnEnemy", _spawnDelay, _spawnIntervalEnemies);
 		InvokeRepeating("SpawnDrunkEnemy", _spawnDelay, _spawnIntervalEnemies);
