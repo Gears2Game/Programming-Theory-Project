@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 8900276222404913892}
   - component: {fileID: 8900276222404913435}
   - component: {fileID: 4099709099010381901}
+  - component: {fileID: -26244191366731947}
   m_Layer: 0
-  m_Name: PickUp
+  m_Name: PickUp_drunk
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,6 +130,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 60
+--- !u!114 &-26244191366731947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8900276222404913893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6cac165184af2d428f1b601705f8ee3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1966693180499487389
 PrefabInstance:
   m_ObjectHideFlags: 0

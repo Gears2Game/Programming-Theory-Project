@@ -16,6 +16,7 @@ public class DrunkVehicle : Vehicle
 		RandomizeSpeedAmount();
 	}
 
+	
 	private void Update()
 	{
 		MoveForward(_speed);
@@ -47,8 +48,8 @@ public class DrunkVehicle : Vehicle
 
 	private void RandomizeBehaviour()
 	{
-		_steerAmount = Random.Range(20f, 40f);
 		_randomDirection = Random.Range(0f, 2f);
+		_steerAmount = Random.Range(20f, 40f);
 		_swervingTime = Random.Range(1f, 2f);
 	}
 
@@ -56,4 +57,5 @@ public class DrunkVehicle : Vehicle
 	{
 		_speed = Random.Range(55f, 70f);
 	}
+
 }
