@@ -18,7 +18,21 @@ public class Vehicle : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
+<<<<<<< Updated upstream
 		if (collision.gameObject.CompareTag("Obstacle"))
+=======
+		_rigidBody.AddForce(Vector3.right * steerAmount, ForceMode.Impulse);
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.gameObject.CompareTag("Obstacle"))
+		{
+			Destroy(gameObject);
+		}
+
+		if (other.gameObject.CompareTag("Player"))
+>>>>>>> Stashed changes
 		{
 			Destroy(gameObject);
 		}

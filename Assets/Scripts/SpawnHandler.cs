@@ -7,7 +7,7 @@ public class SpawnHandler : MonoBehaviour
 	public GameObject[] _enemies;
 	public GameObject _powerUp;
 
-	private float _xRange = 18f;
+	private float _xRange = 16f;
 	private float _zRangePowerUp = 8.0f;
 	private float _spawnDelay = 1.0f;
 	private float _spawnIntervalPowerUp = 30.0f;
