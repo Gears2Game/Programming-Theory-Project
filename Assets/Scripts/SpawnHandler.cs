@@ -16,14 +16,14 @@ public class SpawnHandler : MonoBehaviour
 	private float _enemySpawnPos = 300f;
 	private float _spawnIntervalEnemies = 2f;
 	private float _spawnIntervalDrunkEnemies = 5f;
-	private float _timeLastDrunkEnemiesSpawned;
+	private float _timeLastDrunkEnemiesSpawned;	
+	private float _timeLastEnemiesSpawned;
 
 
 	void Start()
 	{
 		// ABSTRACTION
 		InvokeRepeating("SpawnPowerUp", _spawnDelay, _spawnIntervalPowerUp);
-		InvokeRepeating("SpawnEnemy", _spawnDelay, _spawnIntervalEnemies);
 		_timeLastDrunkEnemiesSpawned = 0f;
 		_player = GameObject.FindGameObjectWithTag("Player");
 		// ENCAPSULATION
@@ -33,6 +33,7 @@ public class SpawnHandler : MonoBehaviour
 	private void Update()
 	{
 		_timeLastDrunkEnemiesSpawned += Time.deltaTime;
+		_timeLastEnemiesSpawned += Time.deltaTime;
 
 		if (_timeLastDrunkEnemiesSpawned > _spawnIntervalDrunkEnemies)
 		{
@@ -40,7 +41,14 @@ public class SpawnHandler : MonoBehaviour
 			_timeLastDrunkEnemiesSpawned = 0f;
 		}
 
+		if (_timeLastEnemiesSpawned > _spawnIntervalEnemies)
+		{
+			SpawnEnemy();
+			_timeLastEnemiesSpawned = 0f;
+		}
+
 		IncreaseDrunkVehicleSpawnRate();
+		IncreaseVehicleSpawnRate();
 	}
 
 	private void IncreaseDrunkVehicleSpawnRate()
@@ -49,13 +57,37 @@ public class SpawnHandler : MonoBehaviour
 		{
 			_spawnIntervalDrunkEnemies = 4f;
 		}
-		else if (_powerUpAmount >= 7)
+		else if (_powerUpAmount >= 6)
 		{
 			_spawnIntervalDrunkEnemies = 3f;
+		}
+		else if (_powerUpAmount >= 8)
+		{
+			_spawnIntervalDrunkEnemies = 2f;
 		}
 		else
 		{
 			_spawnIntervalDrunkEnemies = 5f;
+		}
+	}
+
+	private void IncreaseVehicleSpawnRate()
+	{
+		if (_powerUpAmount >= 4)
+		{
+			_spawnIntervalEnemies = 1.8f;
+		}
+		else if (_powerUpAmount >= 6)
+		{
+			_spawnIntervalEnemies = 1.5f;
+		}
+		else if (_powerUpAmount >= 8)
+		{
+			_spawnIntervalEnemies = 1.2f;
+		}
+		else
+		{
+			_spawnIntervalEnemies = 2f;
 		}
 	}
 
