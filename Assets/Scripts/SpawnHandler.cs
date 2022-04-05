@@ -6,13 +6,17 @@ public class SpawnHandler : MonoBehaviour
 	public GameObject[] _drunkEnemies;
 	public GameObject _powerUp;
 
+	private GameObject _player;
+	private int _powerUpAmount;
 	private float _xRange = 18f;
 	private float _zRangePowerUp = 8.0f;
 	private float _spawnDelay = 1.0f;
-	private float _spawnIntervalPowerUp = 30.0f;
+	private float _spawnIntervalPowerUp = 20.0f;
 
 	private float _enemySpawnPos = 300f;
 	private float _spawnIntervalEnemies = 2f;
+	private float _spawnIntervalDrunkEnemies = 5f;
+	private float _timeLastDrunkEnemiesSpawned;
 
 
 	void Start()
@@ -20,7 +24,39 @@ public class SpawnHandler : MonoBehaviour
 		// ABSTRACTION
 		InvokeRepeating("SpawnPowerUp", _spawnDelay, _spawnIntervalPowerUp);
 		InvokeRepeating("SpawnEnemy", _spawnDelay, _spawnIntervalEnemies);
-		InvokeRepeating("SpawnDrunkEnemy", _spawnDelay, _spawnIntervalEnemies);
+		_timeLastDrunkEnemiesSpawned = 0f;
+		_player = GameObject.FindGameObjectWithTag("Player");
+		// ENCAPSULATION
+		_powerUpAmount = _player.GetComponent<TankControl>().PowerUpAmount;
+	}
+
+	private void Update()
+	{
+		_timeLastDrunkEnemiesSpawned += Time.deltaTime;
+
+		if (_timeLastDrunkEnemiesSpawned > _spawnIntervalDrunkEnemies)
+		{
+			SpawnDrunkEnemy();
+			_timeLastDrunkEnemiesSpawned = 0f;
+		}
+
+		IncreaseDrunkVehicleSpawnRate();
+	}
+
+	private void IncreaseDrunkVehicleSpawnRate()
+	{
+		if (_powerUpAmount >= 4)
+		{
+			_spawnIntervalDrunkEnemies = 4f;
+		}
+		else if (_powerUpAmount >= 7)
+		{
+			_spawnIntervalDrunkEnemies = 3f;
+		}
+		else
+		{
+			_spawnIntervalDrunkEnemies = 5f;
+		}
 	}
 
 	private void SpawnPowerUp()

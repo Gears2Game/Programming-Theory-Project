@@ -1,21 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TankControl : MonoBehaviour
 {
+	// ENCAPSULATION
+	public int PowerUpAmount { get; private set; }
+
 	[SerializeField] private Rigidbody _projejctile;
 	[SerializeField] private float _projectileForce;
 	[SerializeField] private float _speed;
+	[SerializeField] private TMP_Text _powerAmountText;
 
 	private Rigidbody _playerRb;
+	private int _setPowerUpAmount = 3;
 	private bool _isOnGround;
+	private bool _hasCollided = false;
+	private float _collisionTimer = 0f;
+	private float _collisionTime = 0.5f;
 	private float _zBoundary = 15;
 
 	void Start()
 	{
 		_playerRb = GetComponent<Rigidbody>();
+		PowerUpAmount = _setPowerUpAmount;
+		DisplayPowerAmount();
 	}
+
+	
 
 	void Update()
 	{
@@ -23,6 +36,17 @@ public class TankControl : MonoBehaviour
 		MovePlayerOnGround();
 		Attack();
 		PreventMovementOnBoundary();
+		UpdateCollisionTimer();
+	}
+
+	private void UpdateCollisionTimer()
+	{
+		_collisionTimer += Time.deltaTime;
+
+		if (_collisionTimer > _collisionTime)
+		{
+			_hasCollided = false;
+		}
 	}
 
 	private void PreventMovementOnBoundary()
@@ -68,6 +92,13 @@ public class TankControl : MonoBehaviour
 		if (collision.gameObject.CompareTag("Enemy"))
 		{
 			Debug.Log("Collided with the enemy");
+			Destroy(collision.gameObject);
+			if (_hasCollided) return;
+
+			PowerUpAmount--;
+			_collisionTimer = 0f;
+			_hasCollided = true;
+			DisplayPowerAmount();
 		}
 	}
 
@@ -76,6 +107,13 @@ public class TankControl : MonoBehaviour
 		if (other.CompareTag("PowerUp"))
 		{
 			Destroy(other.gameObject);
+			PowerUpAmount++;
+			DisplayPowerAmount();
 		}
+	}
+
+	private void DisplayPowerAmount()
+	{
+		_powerAmountText.text = PowerUpAmount.ToString();
 	}
 }

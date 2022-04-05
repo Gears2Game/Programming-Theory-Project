@@ -19,33 +19,11 @@ public class Vehicle : MonoBehaviour
 		_rigidBody.AddForce(Vector3.right * steerAmount, ForceMode.Impulse);
 	}
 
-	//private void OnCollisionEnter(Collision collision)
-	//{
-	//	if (collision.gameObject.CompareTag("Obstacle"))
-	//	{
-	//		Destroy(gameObject);
-	//	}
-
-	//	if (collision.gameObject.CompareTag("Player"))
-	//	{
-	//		Destroy(gameObject);
-	//		GamePointHandler.Instance.GamePoint -= 1;
-	//		print(GamePointHandler.Instance.GamePoint);
-	//	}
-	//}
-
 	private void OnTriggerEnter(Collider other)
 	{
 		if (other.gameObject.CompareTag("Obstacle"))
 		{
 			Destroy(gameObject);
-		}
-
-		if (other.gameObject.CompareTag("Player"))
-		{
-			Destroy(gameObject);
-			GamePointHandler.Instance.GamePoint -= 1;
-			print(GamePointHandler.Instance.GamePoint);
 		}
 	}
 }
