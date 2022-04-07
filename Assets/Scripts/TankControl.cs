@@ -5,16 +5,10 @@ using UnityEngine;
 
 public class TankControl : MonoBehaviour
 {
-	// ENCAPSULATION
-	public int PowerUpAmount { get; private set; }
-
-	[SerializeField] private Rigidbody _projejctile;
-	[SerializeField] private float _projectileForce;
 	[SerializeField] private float _speed;
-	[SerializeField] private TMP_Text _powerAmountText;
 
 	private Rigidbody _playerRb;
-	private int _setPowerUpAmount = 3;
+	private GameManager _gameManager;
 	private bool _isOnGround;
 	private bool _hasCollided = false;
 	private float _collisionTimer = 0f;
@@ -24,17 +18,13 @@ public class TankControl : MonoBehaviour
 	void Start()
 	{
 		_playerRb = GetComponent<Rigidbody>();
-		PowerUpAmount = _setPowerUpAmount;
-		DisplayPowerAmount();
+		_gameManager = GameObject.FindObjectOfType<GameManager>();
 	}
-
-	
 
 	void Update()
 	{
 		// ABSTRACTION
 		MovePlayerOnGround();
-		Attack();
 		PreventMovementOnBoundary();
 		UpdateCollisionTimer();
 	}
@@ -62,20 +52,12 @@ public class TankControl : MonoBehaviour
 		}
 	}
 
-	private void Attack()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			_projejctile.AddForce(Vector3.forward * _projectileForce, ForceMode.Impulse);
-		}
-	}
-
 	private void MovePlayerOnGround()
 	{
 		float setHorizontalInput = Input.GetAxis("Horizontal");
 		float setVerticalInput = Input.GetAxis("Vertical");
 
-		if (_isOnGround)
+		if (_isOnGround && !_gameManager.IsGameOver)
 		{
 			_playerRb.AddForce(Vector3.forward * _speed * setVerticalInput);
 			_playerRb.AddForce(Vector3.right * _speed * setHorizontalInput);
@@ -95,10 +77,9 @@ public class TankControl : MonoBehaviour
 			Destroy(collision.gameObject);
 			if (_hasCollided) return;
 
-			PowerUpAmount--;
+			_gameManager.ReducePowerUpAmount();
 			_collisionTimer = 0f;
 			_hasCollided = true;
-			DisplayPowerAmount();
 		}
 	}
 
@@ -107,13 +88,7 @@ public class TankControl : MonoBehaviour
 		if (other.CompareTag("PowerUp"))
 		{
 			Destroy(other.gameObject);
-			PowerUpAmount++;
-			DisplayPowerAmount();
+			_gameManager.IncreasePowerUpAmount();
 		}
-	}
-
-	private void DisplayPowerAmount()
-	{
-		_powerAmountText.text = PowerUpAmount.ToString();
 	}
 }

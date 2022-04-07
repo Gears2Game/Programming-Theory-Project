@@ -6,8 +6,7 @@ public class SpawnHandler : MonoBehaviour
 	public GameObject[] _drunkEnemies;
 	public GameObject _powerUp;
 
-	private GameObject _player;
-	private int _powerUpAmount;
+	private GameManager _gameManager;
 	private float _xRange = 18f;
 	private float _zRangePowerUp = 8.0f;
 	private float _spawnDelay = 1.0f;
@@ -19,29 +18,29 @@ public class SpawnHandler : MonoBehaviour
 	private float _timeLastDrunkEnemiesSpawned;	
 	private float _timeLastEnemiesSpawned;
 
-
-	void Start()
+	private void Start()
 	{
 		// ABSTRACTION
 		InvokeRepeating("SpawnPowerUp", _spawnDelay, _spawnIntervalPowerUp);
-		_timeLastDrunkEnemiesSpawned = 0f;
-		_player = GameObject.FindGameObjectWithTag("Player");
+		//_timeLastDrunkEnemiesSpawned = 0f;
+
 		// ENCAPSULATION
-		_powerUpAmount = _player.GetComponent<TankControl>().PowerUpAmount;
+		_gameManager = GameObject.FindObjectOfType<GameManager>();
 	}
 
 	private void Update()
 	{
 		_timeLastDrunkEnemiesSpawned += Time.deltaTime;
 		_timeLastEnemiesSpawned += Time.deltaTime;
+		// print(_gameManager.IsGameOver);
 
-		if (_timeLastDrunkEnemiesSpawned > _spawnIntervalDrunkEnemies)
+		if (_timeLastDrunkEnemiesSpawned > _spawnIntervalDrunkEnemies && !_gameManager.IsGameOver)
 		{
 			SpawnDrunkEnemy();
 			_timeLastDrunkEnemiesSpawned = 0f;
 		}
 
-		if (_timeLastEnemiesSpawned > _spawnIntervalEnemies)
+		if (_timeLastEnemiesSpawned > _spawnIntervalEnemies && !_gameManager.IsGameOver)
 		{
 			SpawnEnemy();
 			_timeLastEnemiesSpawned = 0f;
@@ -51,17 +50,23 @@ public class SpawnHandler : MonoBehaviour
 		IncreaseVehicleSpawnRate();
 	}
 
+	private int GetPowerUpAmount()
+	{
+		return _gameManager.PowerUpAmount;
+	}
+
 	private void IncreaseDrunkVehicleSpawnRate()
 	{
-		if (_powerUpAmount >= 4)
+
+		if (GetPowerUpAmount() >= 4)
 		{
 			_spawnIntervalDrunkEnemies = 4f;
 		}
-		else if (_powerUpAmount >= 6)
+		else if (GetPowerUpAmount() >= 6)
 		{
 			_spawnIntervalDrunkEnemies = 3f;
 		}
-		else if (_powerUpAmount >= 8)
+		else if (GetPowerUpAmount() >= 8)
 		{
 			_spawnIntervalDrunkEnemies = 2f;
 		}
@@ -73,15 +78,15 @@ public class SpawnHandler : MonoBehaviour
 
 	private void IncreaseVehicleSpawnRate()
 	{
-		if (_powerUpAmount >= 4)
+		if (GetPowerUpAmount() >= 4)
 		{
 			_spawnIntervalEnemies = 1.8f;
 		}
-		else if (_powerUpAmount >= 6)
+		else if (GetPowerUpAmount() >= 6)
 		{
 			_spawnIntervalEnemies = 1.5f;
 		}
-		else if (_powerUpAmount >= 8)
+		else if (GetPowerUpAmount() >= 8)
 		{
 			_spawnIntervalEnemies = 1.2f;
 		}
